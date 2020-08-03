@@ -4,11 +4,11 @@ import { View,Text, Button, StyleSheet, ScrollView } from 'react-native';
 const DetailsScreen =({ navigation })=> {
     return (
       <View style={styles.container}>
-         <Text>Details Screen </Text>
+         {/* <Text>Details Screen </Text>
          <Button title="Go to Details again....." onPress={() => navigation.push('Details')}/>
          <Button title="Go to Home" onPress={() => navigation.navigate('Home')}/>
          <Button title="Go back" onPress={() => navigation.goBack()}/>
-         <Button title="Go to the first screen" onPress={() => navigation.popToTop('Home')}/>
+         <Button title="Go to the first screen" onPress={() => navigation.popToTop('Home')}/> */}
       </View>
     );
   };
