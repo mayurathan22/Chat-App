@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -20,26 +20,10 @@ import * as Animatable from "react-native-animatable";
 //import HomeScreen from './HomeScreen';
 
 import Users from "../model/users";
-import *as firebase from 'firebase';
-
-import { AuthContext } from "../Components/Context";
-
-const SignIn = async (email, password) => {
-  try {
-     await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password);
-    
-  } catch (e) {
-    console.log(e.code);
-    if (e.code === "auth/wrong-password" ||e.code ==="auth/user-not-found" )
-      throw new Error("the email or password incorrect ");
-    
-  }
-};
-
+import { Context } from "../Context/AuthContext";
 
 const SignInScreen = ({ navigation }) => {
+  const { signin } = useContext(Context);
   const [data, setData] = React.useState({
     email: "",
     password: "",
@@ -49,16 +33,14 @@ const SignInScreen = ({ navigation }) => {
     isValidPassword: true,
   });
 
-  const [error,seterror]= useState(null)
- // const { signIn } = React.useContext(AuthContext);
+  const [error, seterror] = useState(null);
+  // const { signIn } = React.useContext(AuthContext);
 
   const textInputChange = (val) => {
-
-      setData({
-        ...data,
-        email: val,
-       
-      });
+    setData({
+      ...data,
+      email: val,
+    });
   };
 
   // const handlePasswordChange = (val) => {
@@ -76,15 +58,13 @@ const SignInScreen = ({ navigation }) => {
   //     });
   //   }
   // };
-  const handlePasswordChange =(val)=>{
+  const handlePasswordChange = (val) => {
     setData({
       ...data,
-      password:val,
-    //  isValidPassword:val
-    })
-  }
-
-
+      password: val,
+      //  isValidPassword:val
+    });
+  };
 
   const updateSecureTextEntry = () => {
     setData({
@@ -107,24 +87,21 @@ const SignInScreen = ({ navigation }) => {
     }
   };
 
-  const loginHandler = async() => {
+  const loginHandler = async () => {
     seterror(null);
     try {
-     await SignIn(data.email, data.password);
-     console.log('success!!!')
-     
+      await signin(data.email, data.password);
+      console.log("success!!!");
     } catch (e) {
       seterror(e.message);
     }
-   // navigation.navigate("HomeScreen");
-    
+    // navigation.navigate("HomeScreen");
   };
   useEffect(() => {
     if (error) {
       Alert.alert("An Error occured", error, [{ text: "Ok" }]);
     }
   }, [error]);
-
 
   // loginSuccess = () => {
   //   console.log('login successful, navigate to chat.');
@@ -133,7 +110,6 @@ const SignInScreen = ({ navigation }) => {
   //     email: this.state.email,
   //   });
   // };
-  
 
   return (
     <View style={styles.container}>
@@ -194,16 +170,15 @@ const SignInScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.button}>
-          <TouchableOpacity onPress={loginHandler}
+          <TouchableOpacity
+            onPress={loginHandler}
             style={[
               styles.appButtonContainer,
               styles.signIn,
               { backgroundColor: "#01ab9d" },
             ]}
           >
-            <Text
-              
-              style={[styles.textSign, { color: "#fff" }]}> {" "}sign In</Text>
+            <Text style={[styles.textSign, { color: "#fff" }]}> sign In</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

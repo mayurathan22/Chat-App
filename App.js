@@ -1,29 +1,48 @@
 import "react-native-gesture-handler";
-import React, { useEffect } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
+import React, { useContext } from "react";
+import * as firebase from "firebase";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import RootNavigator from './Screens/RootNavigator';
-
+import { Provider, Context } from "./Context/AuthContext";
+import { DrawerContent } from "./Screens/DrawerContent";
+import MainTabScreen from "./Screens/MainTabScreen";
+import SettingsScreen from "./Screens/SettingsScreen";
+import RootStackScreen from "./Screens/RootStackScreen";
+import WelcomeScreen from "./Screens/WelcomeScreen";
 
 import { firebaseConfig } from "./Firebase";
-import * as firebase from "firebase";
-
-import { Provider } from "./Context/AuthContext";
 
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-
-
-const App = () => {
+const MainNavigation = () => {
+  const Drawer = createDrawerNavigator();
   return (
-   
-      <Provider>
-        <RootNavigator/>
-      </Provider>
-    
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
+      <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
+    </Drawer.Navigator>
   );
 };
 
-export default App ; 
+const App = () => {
+  const { state } = useContext(Context);
+  const isAuth = state.token;
+  const tryAutoLogin = state.tryAutoLogin;
+  return (
+    <NavigationContainer>
+      {isAuth && <MainNavigation />}
+      {!isAuth && tryAutoLogin && <RootStackScreen />}
+      {!isAuth && !tryAutoLogin && <WelcomeScreen />}
+    </NavigationContainer>
+  );
+};
+
+export default () => {
+  return (
+    <Provider>
+      <App />
+    </Provider>
+  );
+};

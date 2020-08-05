@@ -13,11 +13,7 @@ import {
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { AuthContext } from "../Components/Context";
-
 export function DrawerContent(props) {
-  const { signOut } = React.useContext(AuthContext);
-
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -88,9 +84,7 @@ export function DrawerContent(props) {
             <Icon name="exit-to-app" color={color} size={size} />
           )}
           label="Sign Out"
-          onPress={() => {
-            signOut();
-          }}
+          onPress={() => {}}
         />
       </Drawer.Section>
     </View>
