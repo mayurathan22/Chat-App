@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   View,
@@ -11,7 +11,6 @@ import {
   Platform,
   StatusBar,
   Alert,
-
 } from "react-native";
 
 import LinearGradient from "react-native-linear-gradient";
@@ -22,24 +21,25 @@ import * as Animatable from "react-native-animatable";
 import Firebaseconfig from "../Firebase";
 import * as firebase from "firebase";
 import HomeScreen from "./HomeScreen";
-import { Context}from '../Context/AuthContext'; 
+import { Context } from "../Context/AuthContext";
 
 // const SignUP = async (email, username, password) => {
 //   try {
 //      await firebase
 //       .auth()
 //       .createUserWithEmailAndPassword(email, password);
-    
+
 //   } catch (e) {
 //     console.log(e.code);
 //     if (e.code === "auth/email-already-in-use")
 //       throw new Error("the email address is used by another account ");
-    
+
 //   }
 // };
 
 const SignUpScreen = ({ navigation }) => {
-  const {signup} = useContext(Context)
+  const { signup } = useContext(Context);
+
   const [data, setData] = React.useState({
     email: "",
     password: "",
@@ -95,11 +95,11 @@ const SignUpScreen = ({ navigation }) => {
     });
   };
 
-  const signupHandler = async() => {
+  const signupHandler = async () => {
     seterror(null);
     try {
-     await signup(data.email, data.username, data.password);
-     navigation.navigate("HomeScreen");
+      await signup(data.email, data.username, data.password);
+      //navigation.navigate("HomeScreen");
     } catch (e) {
       seterror(e.message);
     }
@@ -290,3 +290,4 @@ const styles = StyleSheet.create({
     // width:250
   },
 });
+
