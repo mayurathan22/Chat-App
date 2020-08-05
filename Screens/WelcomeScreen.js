@@ -5,19 +5,19 @@ import { View, ActivityIndicator } from "react-native";
 import { Context } from "../Context/AuthContext";
 
 const WelcomeScreen = () => {
-  const { tryAutoLogin, authenticate } = useContext(Context);
+  const { autoLogin, authenticate } = useContext(Context);
 
   useEffect(() => {
     const tryLogin = async () => {
       const userdata = await AsyncStorage.getItem("userData");
       if (!userdata) {
-        tryAutoLogin();
+        autoLogin();
         return;
       }
       const transformData = JSON.parse(userdata);
       const { userId, token, userName, email } = transformData;
       if (!userId || !token || !userName) {
-        tryAutoLogin();
+        autoLogin();
         return;
       }
       authenticate(email, userId, userName, token);
