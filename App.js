@@ -18,14 +18,12 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+   
+      <Provider>
+        <RootNavigator/>
+      </Provider>
+    
   );
 };
 
-export default () => (
-  <Provider>
-    <App />
-  </Provider>
-);
+export default App ; 
