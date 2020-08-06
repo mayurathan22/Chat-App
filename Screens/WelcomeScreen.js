@@ -10,6 +10,7 @@ const WelcomeScreen = () => {
   useEffect(() => {
     const tryLogin = async () => {
       const userdata = await AsyncStorage.getItem("userData");
+      console.log(userdata);
       if (!userdata) {
         autoLogin();
         return;

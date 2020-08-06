@@ -31,7 +31,7 @@
 //   return (
 //     <View style={styles.container}>
 //       {/* <Header></Header> */}
-  
+
 //     </View>
 //   );
 // };
@@ -46,10 +46,20 @@
 //   },
 // });
 
-import React,{ useLayoutEffect, useContext, useState, useEffect }  from 'react';
-import { View,Text, Button, StyleSheet, ScrollView,Alert, FlatList, SafeAreaView } from 'react-native';
+import React, { useLayoutEffect, useContext, useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
 import { Card, CardItem, Left, Body, Thumbnail } from "native-base";
 import { Context } from "../Context/AuthContext";
+import AsyncStorage from "@react-native-community/async-storage";
 
 // const HomeScreen =({ navigation })=> {
 //     return (
@@ -63,22 +73,26 @@ import { Context } from "../Context/AuthContext";
 //     );
 //   };
 
-const HomeScreen = ({navigation})=>{
+const HomeScreen = ({ navigation }) => {
   const { state } = useContext(Context);
-    return(
-        <SafeAreaView>
-            <Text>{state.userName}</Text>
-        </SafeAreaView>
-    )
-}
-  export default HomeScreen ;
 
-  const styles  = StyleSheet.create({
-    container :{
-       flex :1,
-       alignContent:'center',
-       alignItems:'center',
-       justifyContent: 'center'
-     
-    },
-})
+  useEffect(() => {
+    AsyncStorage.getItem("userData").then((value) => console.log(value));
+  }, []);
+
+  return (
+    <SafeAreaView>
+      <Text>{state.userName}</Text>
+    </SafeAreaView>
+  );
+};
+export default HomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

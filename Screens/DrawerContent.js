@@ -1,8 +1,8 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 // import {LogOutUser,clearAsyncStorage} from '../Context/AuthContext';
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { Context } from "../Context/AuthContext"
+import { Context } from "../Context/AuthContext";
 import {
   Avatar,
   Title,
@@ -16,23 +16,15 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export function DrawerContent(props) {
-  const { LogOutUser,clearAsyncStorage } = useContext(Context);
+  const { logOutUser, clearAsyncStorage } = useContext(Context);
   //logout
-const logout = () =>{
-   LogOutUser()
-   .then(()=>{
-        clearAsyncStorage()
-           .then(()=>{
-              navigation.replace("SignInScreen");
-           })
-           .catch((err)=>{
-               alert(err)
-           })
-   })
-   .catch((err)=>{
-       alert(err)
-   })
-};
+  const logout = () => {
+    logOutUser()
+      .then(() => console.log("logout"))
+      .catch((err) => {
+        alert(err);
+      });
+  };
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -109,8 +101,6 @@ const logout = () =>{
     </View>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   DrawerContent: {

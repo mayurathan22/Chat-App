@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import AsyncStorage from "@react-native-community/async-storage";
 import { createStackNavigator } from "@react-navigation/stack";
 
 //import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,59 +17,64 @@ const DetailsStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
-const MainTabScreen = () => (
-  <Tab.Navigator
-    initialRouteName="Home"
-    activeColor="#fff"
-    style={{ backgroundColor: "tomato" }}
-  >
-    <Tab.Screen
-      name="Home"
-      component={HomeStackScreen}
-      options={{
-        tabBarLabel: "Home",
-        tabBarColor: "#14818e",
-        tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-home" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Details"
-      component={DetailsStackScreen}
-      options={{
-        tabBarLabel: "Updates",
-        tabBarColor: "#1f65ff",
-        tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-notifications" color={color} size={size} />
-        ),
-        //   tabBarBadge: 4,
-      }}
-    />
-    <Tab.Screen
-      name="Profile"
-      component={ProfileScreen}
-      options={{
-        tabBarLabel: "Profile",
-        tabBarColor: "#009387",
-        tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-person" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Contacts"
-      component={ContactsScreen}
-      options={{
-        tabBarLabel: "Contacts",
-        tabBarColor: "#694fad",
-        tabBarIcon: ({ color, size }) => (
-          <Icon name="ios-contacts" color={color} size={size} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+const MainTabScreen = () => {
+  useEffect(() => {
+    AsyncStorage.getItem("userData").then((value) => console.log(value));
+  }, []);
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      activeColor="#fff"
+      style={{ backgroundColor: "tomato" }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeStackScreen}
+        options={{
+          tabBarLabel: "Home",
+          tabBarColor: "#14818e",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Details"
+        component={DetailsStackScreen}
+        options={{
+          tabBarLabel: "Updates",
+          tabBarColor: "#1f65ff",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-notifications" color={color} size={size} />
+          ),
+          //   tabBarBadge: 4,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarColor: "#009387",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-person" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Contacts"
+        component={ContactsScreen}
+        options={{
+          tabBarLabel: "Contacts",
+          tabBarColor: "#694fad",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-contacts" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 export default MainTabScreen;
 
 const HomeStackScreen = ({ navigation }) => (

@@ -1,6 +1,5 @@
 import createDataContext from "./CreateDataContext";
 import * as firebase from "firebase";
-//import { createContext } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const authreducer = (state, action) => {
@@ -8,7 +7,6 @@ const authreducer = (state, action) => {
     case "authenticate":
       return {
         ...state,
-
         userId: action.payload.Id,
         userName: action.payload.username,
         token: action.payload.token,
@@ -23,11 +21,10 @@ const authreducer = (state, action) => {
     case "logout":
       return {
         ...state,
-
         userId: null,
-        userName:'',
+        userName: "",
         token: null,
-        email: '',
+        email: "",
         tryAutoLogin: true,
       };
     default:
@@ -54,7 +51,14 @@ const signup = (dispatch) => {
           email,
         },
       });
-      AddUser(email,username,userId)
+      //AddUser(email, username, userId);
+      await firebase
+        .database()
+        .ref("users/" + userId)
+        .set({
+          username,
+          email,
+        });
     } catch (e) {
       console.log(e.code);
       if (e.code === "auth/email-already-in-use")
@@ -63,44 +67,18 @@ const signup = (dispatch) => {
   };
 };
 
-const AddUser = async(email, username,uid) => {
-  try {
-      return await firebase
-          .database()
-          .ref('users/'+uid)
-          .set({
-              username:username,
-              email:email,
-              uuid:uid
-          });
-  } catch (error) {
+const logOutUser = (dispatch) => {
+  return async () => {
+    try {
+      await AsyncStorage.removeItem("userData");
+      await firebase.auth().signOut();
+      dispatch({
+        type: "logout",
+      });
+    } catch (error) {
       return error;
-  }
-};
-
-const LogOutUser = async (dispatch) => {
-  try {
-    await firebase.auth().signOut();
-    dispatch({
-      type:'logout',
-      payload: {
-        Id: null,
-        username: username,
-        token,
-        email: email,
-      },
-    })
-  } catch (error) {
-    return error;
-  }
-};
-
-const clearAsyncStorage = async() => {
-  try {
-      await AsyncStorage.clear();
-  } catch (error) {
-      console.log(error);
-  }
+    }
+  };
 };
 
 const signin = (dispatch) => {
@@ -110,7 +88,9 @@ const signin = (dispatch) => {
       const token = await firebase.auth().currentUser.getIdToken();
       const userId = firebase.auth().currentUser.uid;
       const username = firebase.auth().currentUser.displayName;
+
       saveDatatoStorage(userId, token, username, email);
+
       dispatch({
         type: "authenticate",
         payload: {
@@ -135,7 +115,6 @@ const saveDatatoStorage = (userId, token, userName, email) => {
   );
 };
 
-
 const autoLogin = (dispatch) => {
   return () => {
     dispatch({ type: "tryAutoLogin" });
@@ -159,5 +138,5 @@ const authenticate = (dispatch) => {
 export const { Context, Provider } = createDataContext(
   authreducer,
   { token: null, userId: null, userName: "", email: "", tryAutoLogin: false },
-  { signup, signin, autoLogin, authenticate,LogOutUser,clearAsyncStorage }
+  { signup, signin, autoLogin, authenticate, logOutUser }
 );

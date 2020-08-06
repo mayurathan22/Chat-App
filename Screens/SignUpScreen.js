@@ -18,24 +18,9 @@ import MeterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import * as Animatable from "react-native-animatable";
-import Firebaseconfig from "../Firebase";
-import * as firebase from "firebase";
+
 import HomeScreen from "./HomeScreen";
 import { Context } from "../Context/AuthContext";
-
-// const SignUP = async (email, username, password) => {
-//   try {
-//      await firebase
-//       .auth()
-//       .createUserWithEmailAndPassword(email, password);
-
-//   } catch (e) {
-//     console.log(e.code);
-//     if (e.code === "auth/email-already-in-use")
-//       throw new Error("the email address is used by another account ");
-
-//   }
-// };
 
 const SignUpScreen = ({ navigation }) => {
   const { signup } = useContext(Context);
@@ -290,4 +275,3 @@ const styles = StyleSheet.create({
     // width:250
   },
 });
-
