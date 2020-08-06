@@ -20,6 +20,16 @@ const authreducer = (state, action) => {
         ...state,
         tryAutoLogin: true,
       };
+    case "logout":
+      return {
+        ...state,
+
+        userId: null,
+        userName:'',
+        token: null,
+        email: '',
+        tryAutoLogin: true,
+      };
     default:
       return state;
   }
@@ -44,12 +54,53 @@ const signup = (dispatch) => {
           email,
         },
       });
+      AddUser(email,username,userId)
     } catch (e) {
       console.log(e.code);
       if (e.code === "auth/email-already-in-use")
         throw new Error("the email address is used by another account ");
     }
   };
+};
+
+const AddUser = async(email, username,uid) => {
+  try {
+      return await firebase
+          .database()
+          .ref('users/'+uid)
+          .set({
+              username:username,
+              email:email,
+              uuid:uid
+          });
+  } catch (error) {
+      return error;
+  }
+};
+
+const LogOutUser = async (dispatch) => {
+  try {
+    await firebase.auth().signOut();
+    dispatch({
+      type:'logout',
+      payload: {
+        Id: null,
+        username: username,
+        token,
+        email: email,
+      },
+    })
+  } catch (error) {
+    return error;
+  }
+};
+
+const clearAsyncStorage = async() => {
+  try {
+      await AsyncStorage.clear();
+  } catch (error) {
+      console.log(error);
+  }
 };
 
 const signin = (dispatch) => {
@@ -84,6 +135,7 @@ const saveDatatoStorage = (userId, token, userName, email) => {
   );
 };
 
+
 const autoLogin = (dispatch) => {
   return () => {
     dispatch({ type: "tryAutoLogin" });
@@ -107,5 +159,5 @@ const authenticate = (dispatch) => {
 export const { Context, Provider } = createDataContext(
   authreducer,
   { token: null, userId: null, userName: "", email: "", tryAutoLogin: false },
-  { signup, signin, autoLogin, authenticate }
+  { signup, signin, autoLogin, authenticate,LogOutUser,clearAsyncStorage }
 );

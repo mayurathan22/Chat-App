@@ -46,20 +46,31 @@
 //   },
 // });
 
-import React from 'react';
-import { View,Text, Button, StyleSheet, ScrollView } from 'react-native';
+import React,{ useLayoutEffect, useContext, useState, useEffect }  from 'react';
+import { View,Text, Button, StyleSheet, ScrollView,Alert, FlatList, SafeAreaView } from 'react-native';
+import { Card, CardItem, Left, Body, Thumbnail } from "native-base";
+import { Context } from "../Context/AuthContext";
 
-const HomeScreen =({ navigation })=> {
-    return (
-      <View style={styles.container}>
-         <Text>Details Screen </Text>
-         {/* <Button title="Go to Details again....." onPress={() => navigation.push('Details')}/>
-         <Button title="Go to Home" onPress={() => navigation.navigate('Home')}/>
-         <Button title="Go back" onPress={() => navigation.goBack()}/>
-         <Button title="Go to the first screen" onPress={() => navigation.popToTop('Home')}/> */}
-      </View>
-    );
-  };
+// const HomeScreen =({ navigation })=> {
+//     return (
+//       <View style={styles.container}>
+//          {/* <Text>Details Screen </Text> */}
+//          {/* <Button title="Go to Details again....." onPress={() => navigation.push('Details')}/>
+//          <Button title="Go to Home" onPress={() => navigation.navigate('Home')}/>
+//          <Button title="Go back" onPress={() => navigation.goBack()}/>
+//          <Button title="Go to the first screen" onPress={() => navigation.popToTop('Home')}/> */}
+//       </View>
+//     );
+//   };
+
+const HomeScreen = ({navigation})=>{
+  const { state } = useContext(Context);
+    return(
+        <SafeAreaView>
+            <Text>{state.userName}</Text>
+        </SafeAreaView>
+    )
+}
   export default HomeScreen ;
 
   const styles  = StyleSheet.create({
